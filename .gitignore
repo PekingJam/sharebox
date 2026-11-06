@@ -1,0 +1,15 @@
+node_modules/
+dist/
+dist-server/
+data/
+.data/
+.env
+.env.*
+!.env.example
+*.log
+.uitest/
+
+# 编辑器 / 系统
+.DS_Store
+.idea/
+.vscode/

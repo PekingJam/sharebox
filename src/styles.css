@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --surface: 255 255 255;
+    --surface-muted: 246 247 249;
+    --surface-raised: 255 255 255;
+    --line: 228 228 231;
+    --ink: 24 24 27;
+    --ink-soft: 82 82 91;
+    --ink-faint: 113 113 122;
+  }
+
+  .dark {
+    --surface: 18 18 23;
+    --surface-muted: 9 9 11;
+    --surface-raised: 26 26 32;
+    --line: 41 41 48;
+    --ink: 244 244 245;
+    --ink-soft: 161 161 170;
+    --ink-faint: 113 113 122;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface-muted font-sans text-ink antialiased;
+    background-image:
+      radial-gradient(52rem 30rem at 50% -10rem, rgb(99 102 241 / 0.12), transparent 70%),
+      radial-gradient(38rem 26rem at 100% 0%, rgb(168 85 247 / 0.08), transparent 62%);
+    background-repeat: no-repeat;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(52rem 32rem at 50% -12rem, rgb(99 102 241 / 0.18), transparent 70%),
+      radial-gradient(40rem 28rem at 100% 0%, rgb(168 85 247 / 0.1), transparent 64%);
+  }
+
+  ::selection {
+    background: rgb(99 102 241 / 0.24);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--line)) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--line));
+    border-radius: 999px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-line bg-surface shadow-card;
+  }
+
+  .markdown-body {
+    @apply prose prose-zinc max-w-none break-words dark:prose-invert;
+  }
+
+  .markdown-body pre {
+    @apply overflow-x-auto rounded-xl border border-white/10 bg-[#0d1117] p-0 text-[13px] leading-6;
+  }
+
+  .markdown-body pre code {
+    @apply block bg-transparent p-4 text-inherit sm:p-5;
+  }
+
+  .markdown-body :not(pre) > code {
+    @apply rounded-md bg-zinc-100 px-1.5 py-0.5 text-[0.85em] font-medium text-zinc-800 dark:bg-white/10 dark:text-zinc-100;
+  }
+
+  .markdown-body :not(pre) > code::before,
+  .markdown-body :not(pre) > code::after {
+    content: none;
+  }
+
+  .markdown-body table {
+    @apply text-sm;
+  }
+
+  .markdown-body img {
+    @apply rounded-xl;
+  }
+
+  .markdown-body input[type='checkbox'] {
+    @apply mr-1.5 h-3.5 w-3.5 translate-y-[1px] accent-indigo-600;
+  }
+
+  .markdown-body li:has(> input[type='checkbox']) {
+    @apply list-none pl-0;
+  }
+
+  .markdown-body ul.contains-task-list {
+    @apply pl-0;
+  }
+
+  .markdown-body a {
+    @apply font-medium text-indigo-600 no-underline hover:underline dark:text-indigo-400;
+  }
+
+  .markdown-body blockquote {
+    @apply border-l-2 border-indigo-300 font-normal not-italic text-ink-soft dark:border-indigo-500/50;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

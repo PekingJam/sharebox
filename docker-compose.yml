@@ -1,0 +1,55 @@
+name: sharebox
+
+services:
+  sharebox:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sharebox:1.0.0
+    container_name: sharebox
+    restart: unless-stopped
+    init: true
+    ports:
+      - "${SHAREBOX_PORT:-8080}:3000"
+    environment:
+      # 首次启动必须设置，至少 8 位；之后以数据库中的密码为准
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:?请先在 .env 中设置 ADMIN_PASSWORD（至少 8 位）}"
+      # 忘记密码时临时设为 true，用 ADMIN_PASSWORD 重置；重置后请改回 false
+      RESET_ADMIN_PASSWORD: "${RESET_ADMIN_PASSWORD:-false}"
+      SITE_NAME: "${SITE_NAME:-轻传}"
+      MAX_UPLOAD_MB: "${MAX_UPLOAD_MB:-200}"
+      MAX_TOTAL_MB: "${MAX_TOTAL_MB:-500}"
+      DOWNLOAD_TOKEN_MINUTES: "${DOWNLOAD_TOKEN_MINUTES:-60}"
+      TRUST_PROXY: "${TRUST_PROXY:-false}"
+      COOKIE_SECURE: "${COOKIE_SECURE:-auto}"
+      LOG_LEVEL: "${LOG_LEVEL:-info}"
+      TZ: "${TZ:-Asia/Shanghai}"
+    volumes:
+      - sharebox_data:/data
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    stop_grace_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  sharebox_data:
+    name: sharebox_data

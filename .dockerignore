@@ -1,0 +1,14 @@
+node_modules
+dist
+dist-server
+data
+.data
+.git
+.gitignore
+.uitest
+docs
+.env
+.env.*
+*.log
+README.md
+LICENSE
